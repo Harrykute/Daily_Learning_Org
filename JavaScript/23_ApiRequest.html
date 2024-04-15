@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api Request</title>
+</head>
+<body>
+   
+</body>
+<script>
+     const requestUrl = 'https://api.github.com/users/hiteshchoudhary';
+     const xhr = new XMLHttpRequest();
+     xhr.open('GET',requestUrl);
+     //console.log(xhr.readyState);
+     xhr.onreadystatechange = function(){
+        console.log(xhr.readyState);
+        if(xhr.readyState === 4){
+           // const data = this.responseText; //this is in string format 
+            //when data is comming from url it comes as string 
+            //so we have to convert it into json format
+            //so there is two way to convert it into json format
+            //1. JSON.parse()
+            //2. JSON.stringify()
+
+             const data = JSON.parse(this.responseText);
+
+            console.log(typeof data); //this is used for using current context
+            console.log(data.followers);
+        }
+     }
+     xhr.send();
+
+     //console log is debugging tool of javascript 
+     //it is browser devtool
+     //it inject by javascript  engine 
+
+     
+</script>
+</html>

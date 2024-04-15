@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Interval </title>
+</head>
+<body>
+    <h1> Chai aur Javascript </h1>
+    <button id = "start">Start</button>
+    <button id="stop">Stop</button>
+</body>
+
+  <script>
+      
+      //simple use of setInterval
+      /*  setInterval(()=>{
+         console.log("Harish");
+        },2000)*/
+        
+        const sayDate=function(str){
+            console.log(str,Date.now());
+        }
+
+       const intervalID = setInterval(sayDate,1000,"hi");
+       const clearId = function(){
+        clearInterval(intervalID);
+       };
+       
+       document.querySelector('#start').addEventListener('click',intervalID);
+       let count = 0;
+       for(let i = 0 ; i<10 ;i++){
+        
+        document.querySelector('h1').innerHTML = i;
+       }
+
+       document.querySelector('#stop').addEventListener('click',clearId);
+
+
+
+      
+
+  </script>
+
+</html>

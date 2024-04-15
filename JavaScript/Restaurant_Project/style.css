@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .menu {
+    margin-bottom: 20px;
+  }
+  
+  form {
+    margin-bottom: 10px;
+  }
+  
+  .restaurant-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .restaurant-list li {
+    margin-bottom: 10px;
+  }
+  
+  

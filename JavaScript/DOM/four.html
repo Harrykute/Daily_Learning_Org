@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai Aur Code with Harish</title>
+</head>
+<body>
+    <ul class="Language">
+      <li> Javascipt </li>    
+    </ul>
+</body>
+<script> 
+    function addLanuage(LangName){
+       const li = document.createElement('li');
+       li.innerHTML = `${LangName}`;
+       document.querySelector('.Language').appendChild(li);
+    }
+    addLanuage("Python");
+    addLanuage("Java");
+    
+</script>
+</html>

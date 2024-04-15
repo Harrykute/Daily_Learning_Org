@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-image: url(hk.jpg);">
+    <h1 style="text-align: center; color: red;">Library Management System</h1>
+ 
+    <div id="div1">
+    <h1>Book List</h1>
+    <button id="books" onclick="fetchData()">Get All Books</button>
+    <div id="bookList"></div>
+    </div>
+    <hr>
+   <div id ="div2">
+    <h1>Book Details</h1>
+    <form id="bookForm">
+        <label for="bookId">Enter Book ID:</label>
+        <input type="text" id="bookId" name="bookId">
+        <button type="submit">Get Book Details</button>
+    </form>
+    <div id="bookDetails"></div>
+   </div>
+   <hr>
+    <h1>Submit Order</h1>
+    <div id="div3">
+        <h3 > Order Books </h3>
+       <input type="number" id="orderId" placeholder="BookID"> 
+       <input type="text" id="customerName" placeholder="CustomerNAme">
+       <button onclick="Order()" > Booked Order</button>
+       <p id="seachP"> </p>
+      </div>
+     <hr>
+     <div id="div4">
+     <h1>Booked Order List</h1>
+     <button id="orders" onclick="getAllOrder()">Get All Books</button>
+     <div id="ordersList"></div>
+    </div>
+    <hr>
+    <div id="div5">
+     <h1>Update Order</h1>
+    <div >
+        <label>OrderId</label>
+       <input type="text" id="updateorderId"> 
+       <label> CustomerName</label>
+       <input type="text" id="custName">
+       <button onclick="updateOrder()"> Update Order</button>
+       <p id="seachP"> </p>
+     </div>
+       <hr>
+      </div>
+      <div id="div6">
+      <h1>Delete Order</h1>
+      <div >
+         <label>OrderId</label>
+         <input type="text" id="deleteorderId"> 
+         <button onclick="deleteOrder()">Delete Order</button>
+         <p id="seachP"> </p>
+        </div>
+        </div>
+
+    <script>
+        function fetchData() {
+            axios.get("https://simple-books-api.glitch.me/books")
+           .then(response => {
+               
+            let html = "";
+                response.data.forEach(book => {
+                    html += `<li> <strong> Book Id </strong> : ${book.id} - <strong> Book Name </strong> : ${book.name} - <strong> Type </strong> : ${book.type} - <strong> Availablity </strong> : ${book.available? "Yes" : "No"}</li>`;
+                });
+                document.querySelector("#bookList").innerHTML = html;
+            })
+           .catch(error => console.error(error));
+        }
+
+        document.getElementById("bookForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const bookId = document.getElementById("bookId").value;
+            const bookDetailsDiv = document.getElementById("bookDetails");
+            try {
+                const response = await axios.get(`https://simple-books-api.glitch.me/books/${bookId}`);
+                const book = response.data;
+
+                const bookHTML = `
+                    <h2>${book.name}</h2>
+                    <p>ID: ${book.id}</p>
+                    <p>Type: ${book.type}</p>
+                    <p>Available: ${book.available ? "Yes" : "No"}</p>
+                `;
+                bookDetailsDiv.innerHTML = bookHTML;
+            } catch (error) {
+                console.error("Error fetching book details:", error);
+                bookDetailsDiv.innerHTML = "<p>Error fetching book details. Please try again.</p>";
+            }
+        });
+
+
+        function Order(){
+      const bookId = parseInt(document.getElementById("orderId").value);
+      const custName = document.getElementById("customerName").value;
+      console.log(bookId, custName);
+
+      const accessToken = "be9788ca7d8a6a7159f37ebdb643b0236197345ad859817079bb97efd29e05f9";
+
+      axios.post("https://simple-books-api.glitch.me/orders/", {
+            bookId: bookId,
+            customerName: custName
+        }, {
+            headers: {  
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Order created:', response.data);
+        })
+        .catch((error) => {
+            console.error('Error creating order:', error);
+        });
+        }
+
+        function getAllOrder() {
+         axios.get('https://simple-books-api.glitch.me/orders', {
+          headers: {
+            Authorization: `Bearer be9788ca7d8a6a7159f37ebdb643b0236197345ad859817079bb97efd29e05f9`
+             }
+           })
+        .then(response => {
+            const data = response.data;
+            console.log(data);
+            let html = "";
+                response.data.forEach(order => {
+                    html += `<li> <strong> Order Id </strong> : ${order.id} - <strong> Customer Name </strong> : ${order.customerName} - <strong> Quantity </strong> : ${order.quantity} </li>`;
+                });
+                document.querySelector("#ordersList").innerHTML = html;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
+        function updateOrder(){
+            const orderId = document.getElementById('updateorderId').value;
+            const custName = document.getElementById('custName').value;
+            const data = {
+              customerName : custName
+              }
+            axios.patch(`https://simple-books-api.glitch.me/orders/${orderId}`, data, {
+         headers: {
+            Authorization: `Bearer be9788ca7d8a6a7159f37ebdb643b0236197345ad859817079bb97efd29e05f9`
+            }
+             })
+            .then(response => {
+            console.log(response);
+       
+             })
+            .catch(error => {
+         console.error( error);
+             });
+        }
+
+        function deleteOrder(){
+            const orderId = document.getElementById('deleteorderId').value;
+
+            axios.delete(`https://simple-books-api.glitch.me/orders/${orderId}`,{
+         headers: {
+            Authorization: `Bearer be9788ca7d8a6a7159f37ebdb643b0236197345ad859817079bb97efd29e05f9`
+            }
+             })
+            .then(response => {
+            console.log(response);
+       
+             })
+            .catch(error => {
+         console.error( error);
+             });
+        }
+    
+        
+
+
+
+    </script>
+
+</body>
+</html>

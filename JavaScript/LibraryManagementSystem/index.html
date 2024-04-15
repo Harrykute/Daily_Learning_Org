@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Book List</h1>
+    <button id="books">Get All Books</button>
+    <div id="bookList"></div>
+
+   <div>
+    <h1>Book Details</h1>
+    <form id="bookForm">
+        <label for="bookId">Enter Book ID:</label>
+        <input type="text" id="bookId" name="bookId">
+        <button type="submit">Get Book Details</button>
+    </form>
+    <div id="bookDetails"></div>
+   </div>
+
+    <h1>Submit Order</h1>
+    <form id="orderForm">
+        <label for="bookId">Book ID:</label>
+        <input type="text" id="order" name="order" required>
+        <label for="customerName">Customer Name:</label>
+        <input type="text" id="customerName" name="customerName" required>
+        <button type="submit">Submit Order</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+ 
+        document.getElementById("orderForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const bookId = document.getElementById("order").value;
+            console.log(bookId);
+            const customerName = document.getElementById("customerName").value;
+            console.log(customerName);
+
+
+            try {
+
+                const apiUrl = "https://simple-books-api.glitch.me/orders/";
+                const response = await axios.post(apiUrl, {
+                headers: {
+                 Authorization: "Bearer be9788ca7d8a6a7159f37ebdb643b0236197345ad859817079bb97efd29e05f9"
+                   }
+                }, {
+                bookId: parseInt(bookId),
+                customerName: customerName
+               }); 
+                const orderId = response.data.orderId;
+                document.getElementById("bookId").value = "";
+                document.getElementById("customerName").value = "";
+            } catch (error) {
+                console.error("Error submitting order:", error.response.data);
+                messageDiv.textContent = "Error submitting order. Please try again.";
+            }
+        });
+
+
+
+    </script>
+
+
+</body>
+</html>
